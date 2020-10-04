@@ -1,0 +1,33 @@
+﻿@model List<JQuery_MVC.Models.tblCity>
+<table>
+    <thead>
+        <tr>
+            <th>City Id</th>
+            <th>City Name</th>
+            <th>Country Id</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var i in Model)
+            {
+        <tr>
+            <td>@i.CityId</td>
+            <td>@i.CityName</td>
+            <td>@i.CountryId</td>
+            <td>
+                <a href="~/City/UpdateCity/@i.CityId">Edit</a>
+            </td>
+            @*@Html.ActionLink("Edit", "UpdateCity", "City", new { @id = i.CityId })*@
+                @*@@*using (Html.BeginForm("DeleteCity", "City", FormMethod.Post, new { id = i.CityId }))
+            {
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <input type="submit" class="btn btn-info" value="delete">
+            }*@
+            <td>
+                <a href="~/City/DeleteCity/@i.CityId">Delete</a>
+            </td>
+        </tr>
+        }
+        </tbody>
+    </table>
+@Html.ActionLink("AddCity", "AddCity", "City")

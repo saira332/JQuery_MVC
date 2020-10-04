@@ -1,0 +1,144 @@
+﻿<style>
+    /*.new {
+        margin-left: 100px;
+        background-color: lightcoral;
+        color: black;
+    }*/
+</style>
+<div class="container">
+    <!-- Top Navigation -->
+
+
+    <div class="component">
+        @Html.Partial("_partialview");
+    
+        <h2>Basic usage</h2>
+        <p>This is a basic usage example. Scroll down to see the sticky table header in action. And of course, multiple instances are supported. Tables are pre-populated with random user data retrieved from the <a href="http://randomuser.me/" title="Random User Generator">Random User Generator</a>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Mobile</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="more">></td>
+                    <td class="user-name">gary coleman</td>
+                    <td class="user-email">gary.coleman21@example.com</td>
+                    <td class="user-phone">(398)-332-5385</td>
+                    <td class="user-mobile">(888)-677-3719</td>
+                </tr>
+                <tr>
+                    <td class="more">></td>
+                    <td class="user-name">gary coleman</td>
+                    <td class="user-email">gary.coleman21@example.com</td>
+                    <td class="user-phone">(398)-332-5385</td>
+                    <td class="user-mobile">(888)-677-3719</td>
+                </tr>
+                <tr>
+                    <td class="more">></td>
+                    <td class="user-name">gary coleman</td>
+                    <td class="user-email">gary.coleman21@example.com</td>
+                    <td class="user-phone">(398)-332-5385</td>
+                    <td class="user-mobile">(888)-677-3719</td>
+                </tr>
+            </tbody>
+        </table>
+        @*2nd Task*@
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="trow">
+                    <td class="user-name">gray</td>
+                    <td class="user-email">gray21@example.com</td>
+                    <td class="user-phone">(398)-332-5385</td>
+                </tr>
+                <tr class="trow">
+                    <td class="user-name">Jack</td>
+                    <td class="user-email">jack21@example.com</td>
+                    <td class="user-phone">(398)-332-5385</td>
+                </tr>
+                <tr class="trow">
+                    <td class="user-name">Jelly</td>
+                    <td class="user-email">jelly21@example.com</td>
+                    <td class="user-phone">(398)-332-5385</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="find"> Click </button>
+        <p class="alert"></p>
+
+
+
+
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    //Task1
+    $(document).on('click', '.more', function () {
+
+        // $('<tr class="new"> <td>New Row</td> <td>new Record</td>  </tr>').prependTo(this);
+        $(this).parent().after('<table class="new"> <tr> <td class="back">x</td> <td>new Record</td> <td>New Row</td> <td>new Record</td>  </tr> </table>');
+
+    })
+    $(document).on('click', '.back', function () {
+        $(this).parents('.new').remove();
+    })
+
+    //Task2
+    function getAllData() {
+        var arrayData = [];
+        $('.trow').each(function () {
+            var name = $(this).find('.user-name').text();
+            var alldata = {
+                'name': name
+            }
+            arrayData.push(alldata);
+        });
+        return arrayData;
+    }
+    $(document).on('click', '.find', function () {
+        console.log("clicked");
+        var detailData = JSON.stringify(getAllData());
+        $.ajax({
+            type: "POST",
+            url: "/Home/addName/",
+            data: { 'nameData': detailData },
+            dataType: 'json',
+            success: function (data) {
+                /*$('#btn_Save').html("Save");*/
+                if (data.msg) {
+                    //$('#MyModal').animate({ scrollTop: 0 }, 'fast');
+                    //$('.alertDiv').html('<div class="alert alert-success" id="success-alert" style="">' +
+                    //    '<button type="button" class="close" data-dismiss="alert">x</button>' +
+                    //    '<strong>Success! </strong>' +
+                    //    'Installment Saved Succesfully.' +
+                    //    '</div>');
+                    //$("#success-alert").fadeTo(1000, 500).slideUp(500, function () {
+                    //    $("#success-alert").slideUp(500);
+                    //    $('.alertDiv').html('');
+                    //    $('#MyModal').modal('toggle');
+                    $('.alert').text(data.msg);
+                        oTable.ajax.reload(null, false);
+                    //});
+                }
+                //else {
+                //    $('#btn_Save').prop('disabled', false);
+                //    alert(data.message);
+                //}
+            }
+        })
+    })
+</script>
+
